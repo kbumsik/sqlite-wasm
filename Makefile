@@ -122,6 +122,20 @@ debug: WEBPACK_OPTS += --mode development
 # debug: EMCC_SQLITE_FLAGS += -DSQLITE_DEBUG
 debug: all
 
+# Every commands can be run in a docker container when *-in-docker is appended.
+# e.g make start => make start-in-docker,
+#			make test => make test-docker
+# Port 9000 is used by the webserver of examples/demo
+INTERACTIVE:=$(shell [ -t 0 ] && echo 1)
+
+%-in-docker:
+	docker run --rm $(if $(INTERACTIVE), -it, ) \
+		-v $$(pwd):/build \
+		$(if $(CI), , -u $$(id -u):$$(id -g)) \
+		-p 9000:9000 \
+		kbumsik/emscripten \
+		make $(patsubst %-in-docker, %, $@)
+
 ################################################################################
 # Building JS
 ################################################################################
