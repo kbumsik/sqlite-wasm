@@ -45,7 +45,7 @@ module.exports = {
   typeof blogsearch !== 'undefined' ? blogsearch : typeof self !== 'undefined' ? self : this,
   function() {
     return function() {`,
-      // Worker Code (lib/sqlite/worker.js) is placed here.
+      // Worker Code (lib/worker.js) is placed here.
       footer: `
     }
   },
@@ -53,7 +53,7 @@ module.exports = {
     }),
   ],
   entry: {
-    worker: './lib/sqlite/worker.js',
+    worker: './lib/worker.js',
   },
   mode: 'development',
   module: {

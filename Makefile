@@ -118,7 +118,7 @@ dist: all
 debug: EMCC_OPTS += -g4 -s ASSERTIONS=2 -s SAFE_HEAP=1 -s STACK_OVERFLOW_CHECK=1
 debug: WEBPACK_OPTS += --mode development
 ##		[TODO] Fails when enabled. Fix the source in order to make it work.
-## 		Assertion failed: p->iStructVersion!=0, at: sqlite-src/sqlite-amalgamation-3300100/sqlite3.c,212053,fts5StructureRead
+## 		Assertion failed: p->iStructVersion!=0, at: sqlite-src-amalgamation-3300100/sqlite3.c,212053,fts5StructureRead
 # debug: EMCC_SQLITE_FLAGS += -DSQLITE_DEBUG
 debug: all
 
@@ -146,20 +146,20 @@ TS_SRC = $(shell \
 		-not -path "*/__tests__/*")
 # Basically: src/*.ts => lib/*.js, except TypeScript .d.js files
 JS_SRC = $(filter-out %.d.js, $(patsubst src/%, lib/%, $(TS_SRC:%.ts=%.js)))
-JS_SRC += lib/sqlite/sqlite3-emscripten.js
+JS_SRC += lib/sqlite3-emscripten.js
 
 lib/%.js: src/%.ts
 	yarn build:ts
 
 #### UMD
 # API
-dist/blogsearch.umd.js: $(filter-out lib/sqlite/%, $(JS_SRC))
+dist/blogsearch.umd.js: $(JS_SRC)
 	webpack \
 		--config webpack.config.js \
 		$(WEBPACK_OPTS) \
 		-o $@
-# Worker - files under lib/sqlite
-dist/worker.umd.js: $(filter lib/sqlite/%, $(JS_SRC)) lib/sqlite/blogsearch.wasm
+# Worker - files under lib
+dist/worker.umd.js: $(JS_SRC) lib/blogsearch.wasm
 	webpack \
 		--config webpack.worker.config.js \
 		$(WEBPACK_OPTS) \
@@ -168,19 +168,19 @@ dist/worker.umd.js: $(filter lib/sqlite/%, $(JS_SRC)) lib/sqlite/blogsearch.wasm
 ################################################################################
 # Building WASM
 ################################################################################
-dist/blogsearch.wasm: lib/sqlite/blogsearch.wasm
+dist/blogsearch.wasm: lib/blogsearch.wasm
 	mkdir -p $(dir $@)
 	cp $^ $@
 
 # These are represented as $(word {line_num}, $^) in the recipe
 WASM_DEPS = \
-	src/sqlite/sqlite3-emscripten-post-js.js \
+	src/sqlite3-emscripten-post-js.js \
 	sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c \
-	src/sqlite/exported_functions.json \
-	src/sqlite/exported_runtime_methods.json
+	src/exported_functions.json \
+	src/exported_runtime_methods.json
 
-lib/sqlite/sqlite3-emscripten.js: lib/sqlite/blogsearch.wasm
-lib/sqlite/blogsearch.wasm: $(WASM_DEPS)
+lib/sqlite3-emscripten.js: lib/blogsearch.wasm
+lib/blogsearch.wasm: $(WASM_DEPS)
 	mkdir -p $(dir $@)
 	emcc \
 		$(EMCC_OPTS) \
@@ -190,7 +190,7 @@ lib/sqlite/blogsearch.wasm: $(WASM_DEPS)
 		-s EXPORTED_FUNCTIONS=@$(word 3, $^) \
 		-s EXTRA_EXPORTED_RUNTIME_METHODS=@$(word 4, $^) \
 		-o $(@:.wasm=.js)
-	mv $(@:.wasm=.js) lib/sqlite/sqlite3-emscripten.js
+	mv $(@:.wasm=.js) lib/sqlite3-emscripten.js
 
 ################################################################################
 # Building SQLite
