@@ -29,8 +29,8 @@ export default async function initWorker () {
       case 'init': {
         wasm = (await loadWasm(data.wasmBinary)) as SQLite3Wasm;
         postMessage({ respondTo: 'init', success: true });
+        break;
       }
-      break;
 
       case 'open': {
         if (db) {
@@ -38,8 +38,8 @@ export default async function initWorker () {
         }
         db = new sqlit3API.Database(wasm, new Uint8Array(data.dbBinary));
         postMessage({ respondTo: 'open', success: true });
+        break;
       }
-      break;
 
       case 'exec': {
         if (!db) {
@@ -52,42 +52,34 @@ export default async function initWorker () {
           respondTo: 'exec',
           results: db.exec(data.sql),
         });
+        break;
       }
-      break;
 
       case 'each': {
-        if (!db) {
-          throw new Error('exec: DB is not initialized.');
-        }
-        if (!data.sql) {
-          throw new Error('exec: Missing query string');
-        }
+        if (!db) throw new Error('exec: DB is not initialized.');
+        if (!data.sql) throw new Error('exec: Missing query string');
         db.each(
           data.sql,
           data.params,
           (row: ReturnMap) => postMessage({ respondTo: 'each', row, end: false }),
           () => postMessage({ respondTo: 'each', row: {}, end: true })
         );
+        break;
       }
-      break;
 
       case 'export': {
-        if (!db) {
-          throw new Error('exec: DB is not initialized.');
-        }
+        if (!db) throw new Error('exec: DB is not initialized.');
         const buffer = db.export();
         postMessage({ respondTo: 'export', buffer }, [buffer]);
+        break;
       }
-      break;
 
       case 'close': {
-        if (!db) {
-          throw new Error('close: DB is not opened yet.');
-        }
+        if (!db) throw new Error('close: DB is not opened yet.');
         db.close();
         postMessage({ respondTo: 'close', success: true });
+        break;
       }
-      break;
 
       default: {
         throw new Error(`Invalid command: ${data}`);
