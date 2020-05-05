@@ -58,6 +58,12 @@
   "keywords": [
     "blogsearch",
     "webassembly",
-    "sqlite"
+    "sqlite",
+    "sqlite3",
+    "sql",
+    "database",
+    "RDBMS",
+    "emscripten",
+    "typescript"
   ]
 }
