@@ -175,7 +175,7 @@ dist/sqlite-slim-fts5.wasm: lib/sqlite-slim-fts5.wasm
 # These are represented as $(word {line_num}, $^) in the recipe
 WASM_DEPS = \
 	src/sqlite3-emscripten-post-js.js \
-	sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c \
+	cache/$(SQLITE_AMALGAMATION)/sqlite3.c \
 	src/exported_functions.json \
 	src/exported_runtime_methods.json
 
@@ -195,11 +195,11 @@ lib/sqlite-slim-fts5.wasm: $(WASM_DEPS)
 ################################################################################
 # Building SQLite
 ################################################################################
-sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c: cache/$(SQLITE_AMALGAMATION).zip
+cache/$(SQLITE_AMALGAMATION)/sqlite3.c: cache/$(SQLITE_AMALGAMATION).zip
 	mkdir -p sqlite-src
 	echo '$(SQLITE_AMALGAMATION_ZIP_SHA1) ./cache/$(SQLITE_AMALGAMATION).zip' > cache/sha_$(SQLITE_AMALGAMATION).txt
 	sha1sum -c cache/sha_$(SQLITE_AMALGAMATION).txt
-	unzip -DD 'cache/$(SQLITE_AMALGAMATION).zip' -d sqlite-src/
+	unzip -DD 'cache/$(SQLITE_AMALGAMATION).zip' -d cache/
 
 cache/$(SQLITE_AMALGAMATION).zip:
 	mkdir -p cache
@@ -211,7 +211,14 @@ cache/$(SQLITE_AMALGAMATION).zip:
 .PHONY: clean
 
 clean:
-	-rm -rf dist
-	-rm -rf lib
-	-rm -rf sqlite-src
-	-rm -rf lib-test
+	-find ./cache -type f \
+		! -name '.gitignore' \
+		-exec rm -f {} +
+	-find ./dist -type f \
+		! -name '.gitignore' \
+		! -name '.npmignore' \
+		-exec rm -f {} +
+	-find ./lib -type f \
+		! -name '.gitignore' \
+		! -name '.npmignore' \
+		-exec rm -f {} +

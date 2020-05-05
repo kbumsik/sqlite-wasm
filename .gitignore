@@ -1,7 +1,1 @@
 node_modules/
-/sqlite-src
-/lib
-/lib-test
-/cache
-/dist
-/test

@@ -1,0 +1,6 @@
+# This directory is used by ../Makefile for a temporary SQLite source storage
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+!.npmignore
