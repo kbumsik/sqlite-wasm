@@ -6,8 +6,8 @@ module.exports = {
   ],
   parserOptions: {
       project: [
-        './blogsearch/tsconfig.json',
-        './blogsearch/tsconfig.test.json'
+        './tsconfig.json',
+        './tsconfig.test.json'
       ]
   },
   ignorePatterns: [
