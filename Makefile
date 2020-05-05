@@ -101,7 +101,7 @@ SQLITE_OWN_OPTIMIZATIONS = \
 
 
 # Top level build targets
-all: dist/blogsearch.umd.js dist/worker.umd.js dist/sqlite-slim-fts5.wasm
+all: dist/sqlite-wasm.umd.js dist/worker.umd.js dist/sqlite-slim-fts5.wasm
 	@$(foreach target, $^, $(call print_size, $(target)))
 
 define print_size
@@ -153,13 +153,13 @@ lib/%.js: src/%.ts
 
 #### UMD
 # API
-dist/blogsearch.umd.js: $(JS_SRC)
+dist/sqlite-wasm.umd.js: $(JS_SRC)
 	webpack \
 		--config webpack.config.js \
 		$(WEBPACK_OPTS) \
 		-o $@
 # Worker - files under lib
-dist/worker.umd.js: $(JS_SRC) lib/sqlite-slim-fts5.wasm
+dist/worker.umd.js: $(JS_SRC)
 	webpack \
 		--config webpack.worker.config.js \
 		$(WEBPACK_OPTS) \

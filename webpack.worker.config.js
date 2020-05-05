@@ -8,7 +8,7 @@ const WrapperPlugin = require('wrapper-webpack-plugin');
  *  1. Before checking availabilities of module, define(), and ES6, it should
  *    initiate itself if it is run in the web worker environment.
  *  2. If none of above environments available it should be attacted to
- *    'blogsearch' object, which is already defined using <script> tag, as a
+ *    'sqliteWasm' object, which is already defined using <script> tag, as a
  *    plugin.
  */
 /* global WorkerGlobalScope, define */
@@ -24,11 +24,11 @@ function workerUMD(root, factory) {
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["worker"] = factory();
+		exports['worker'] = factory();
 	else {
-		root["worker"] = factory();
-    if (typeof blogsearch === 'undefined' || typeof blogsearch !== 'function')
-      console.warn('blogsearch.worker may not be loaded correctly.');
+		root['worker'] = factory();
+    if (typeof sqliteWasm === 'undefined' || typeof sqliteWasm !== 'function')
+      console.warn('sqliteWasm.worker may not be loaded correctly.');
   }
 }
 /* eslint-enable prettier/prettier, vars-on-top, no-var, dot-notation, no-param-reassign, no-console */
@@ -42,7 +42,11 @@ module.exports = {
 (
   ${workerUMD.toString()}
 )(
-  typeof blogsearch !== 'undefined' ? blogsearch : typeof self !== 'undefined' ? self : this,
+  typeof sqliteWasm !== 'undefined'
+    ? sqliteWasm
+    : typeof self !== 'undefined'
+      ? self
+      : this,
   function() {
     return function() {`,
       // Worker Code (lib/worker.js) is placed here.

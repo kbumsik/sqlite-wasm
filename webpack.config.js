@@ -2,10 +2,10 @@
 /* eslint-disable import/no-commonjs */
 module.exports = {
   entry: {
-    blogsearch: './lib/index.js',
+    sqliteWasm: './lib/index.js',
   },
   output: {
-    library: 'blogsearch',
+    library: 'sqliteWasm',
     libraryExport: 'default',
     libraryTarget: 'umd',
     globalObject: "typeof self !== 'undefined' ? self : this",
