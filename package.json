@@ -1,8 +1,8 @@
 {
-  "name": "blogsearch",
-  "version": "0.0.3",
-  "description": "A pure client-side full-text search engine for static websites",
-  "repository": "https://github.com/kbumsik/blogsearch",
+  "name": "sqlite-wasm",
+  "version": "0.0.1",
+  "description": "Run SQLite on the web, using WebAssembly",
+  "repository": "https://github.com/kbumsik/sqlite-wasm",
   "author": "Bumsik Kim <k.bumsik@gmail.com>",
   "license": "MIT",
   "main": "./lib/index.js",
