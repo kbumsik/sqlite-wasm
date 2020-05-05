@@ -169,7 +169,6 @@ dist/worker.umd.js: $(JS_SRC)
 # Building WASM
 ################################################################################
 dist/sqlite-slim-fts5.wasm: lib/sqlite-slim-fts5.wasm
-	mkdir -p $(dir $@)
 	cp $^ $@
 
 # These are represented as $(word {line_num}, $^) in the recipe
@@ -181,7 +180,6 @@ WASM_DEPS = \
 
 lib/sqlite3-emscripten.js: lib/sqlite-slim-fts5.wasm
 lib/sqlite-slim-fts5.wasm: $(WASM_DEPS)
-	mkdir -p $(dir $@)
 	emcc \
 		$(EMCC_OPTS) \
 		$(EMCC_SQLITE_FLAGS) \
@@ -196,13 +194,11 @@ lib/sqlite-slim-fts5.wasm: $(WASM_DEPS)
 # Building SQLite
 ################################################################################
 cache/$(SQLITE_AMALGAMATION)/sqlite3.c: cache/$(SQLITE_AMALGAMATION).zip
-	mkdir -p sqlite-src
 	echo '$(SQLITE_AMALGAMATION_ZIP_SHA1) ./cache/$(SQLITE_AMALGAMATION).zip' > cache/sha_$(SQLITE_AMALGAMATION).txt
 	sha1sum -c cache/sha_$(SQLITE_AMALGAMATION).txt
 	unzip -DD 'cache/$(SQLITE_AMALGAMATION).zip' -d cache/
 
 cache/$(SQLITE_AMALGAMATION).zip:
-	mkdir -p cache
 	curl -LsSf '$(SQLITE_AMALGAMATION_ZIP_URL)' -o $@
 
 ################################################################################
