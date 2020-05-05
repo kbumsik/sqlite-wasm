@@ -4,7 +4,7 @@
 import type { SQLite3Wasm } from './sqlite3-emscripten';
 import type { Database } from './sqlite3';
 import type { ReturnMap } from './sqlite3-types';
-import type { WorkerMessage } from './worker-interface';
+import type { WorkerMessage } from './workerInterface';
 
 declare global {
   /**
