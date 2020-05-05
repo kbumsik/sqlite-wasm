@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "rootDir": "src/lib",
+    "outDir": "lib-test",
+  },
+  "include": [
+    "src/lib/**/*.ts",
+    "src/lib/**/index.js"
+  ],
+  "exclude": []
+}

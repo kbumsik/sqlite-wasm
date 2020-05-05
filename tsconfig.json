@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES6",
+    "lib": ["ESNext", "WebWorker", "DOM"],
+    "rootDir": "src/lib",
+    "outDir": "lib",
+  },
+  "include": [
+    "src/lib/**/*.ts",
+    "src/lib/**/index.js"
+  ],
+  "exclude": [
+    "lib",
+    "lib-test",
+    "**/__tests__/*",
+    "**/__mocks__/*"
+  ]
+}

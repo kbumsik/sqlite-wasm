@@ -1,0 +1,30 @@
+@import 'dropdown';
+
+// DROPDOWN
+$dropdown-config: (
+  main-color: #458ee1,
+  layout-type: normal,
+  layout-width: normal,
+  layout-alignment: align,
+  background-color: #fff,
+  border-radius: 4,
+  border-width: 1,
+  border-color: #d9d9d9,
+  box-shadow: light,
+  branding-position: bottom,
+  spacing: normal,
+  include-desc: yes,
+  background-category-header: #ffffff,
+  font-size: normal,
+  header-color: #33363d,
+  title-color: #02060c,
+  subtitle-color: #a4a7ae,
+  text-color: #63676d,
+  highlight-color: #3881ff,
+  highlight-opacity: 0.1,
+  highlight-type: underline
+) !default;
+
+$builder-height: 260px;
+
+@include dropdown($dropdown-config...);
