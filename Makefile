@@ -101,7 +101,7 @@ SQLITE_OWN_OPTIMIZATIONS = \
 
 
 # Top level build targets
-all: dist/blogsearch.umd.js dist/worker.umd.js dist/blogsearch.wasm
+all: dist/blogsearch.umd.js dist/worker.umd.js dist/sqlite-slim-fts5.wasm
 	@$(foreach target, $^, $(call print_size, $(target)))
 
 define print_size
@@ -159,7 +159,7 @@ dist/blogsearch.umd.js: $(JS_SRC)
 		$(WEBPACK_OPTS) \
 		-o $@
 # Worker - files under lib
-dist/worker.umd.js: $(JS_SRC) lib/blogsearch.wasm
+dist/worker.umd.js: $(JS_SRC) lib/sqlite-slim-fts5.wasm
 	webpack \
 		--config webpack.worker.config.js \
 		$(WEBPACK_OPTS) \
@@ -168,7 +168,7 @@ dist/worker.umd.js: $(JS_SRC) lib/blogsearch.wasm
 ################################################################################
 # Building WASM
 ################################################################################
-dist/blogsearch.wasm: lib/blogsearch.wasm
+dist/sqlite-slim-fts5.wasm: lib/sqlite-slim-fts5.wasm
 	mkdir -p $(dir $@)
 	cp $^ $@
 
@@ -179,8 +179,8 @@ WASM_DEPS = \
 	src/exported_functions.json \
 	src/exported_runtime_methods.json
 
-lib/sqlite3-emscripten.js: lib/blogsearch.wasm
-lib/blogsearch.wasm: $(WASM_DEPS)
+lib/sqlite3-emscripten.js: lib/sqlite-slim-fts5.wasm
+lib/sqlite-slim-fts5.wasm: $(WASM_DEPS)
 	mkdir -p $(dir $@)
 	emcc \
 		$(EMCC_OPTS) \
