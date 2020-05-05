@@ -101,7 +101,7 @@ SQLITE_OWN_OPTIMIZATIONS = \
 
 
 # Top level build targets
-all: dist/blogsearch.umd.js dist/worker.umd.js dist/blogsearch.wasm dist/blogsearch.min.css
+all: dist/blogsearch.umd.js dist/worker.umd.js dist/blogsearch.wasm
 	@$(foreach target, $^, $(call print_size, $(target)))
 
 define print_size
@@ -140,15 +140,15 @@ INTERACTIVE:=$(shell [ -t 0 ] && echo 1)
 # Building JS
 ################################################################################
 TS_SRC = $(shell \
-	find src/lib/ -type f \
+	find src/ -type f \
 		-name '*.ts' \
 		-not -path "*/__mocks__/*" \
 		-not -path "*/__tests__/*")
-# Basically: src/lib/*.ts => lib/*.js, except TypeScript .d.js files
-JS_SRC = $(filter-out %.d.js, $(patsubst src/lib/%, lib/%, $(TS_SRC:%.ts=%.js)))
+# Basically: src/*.ts => lib/*.js, except TypeScript .d.js files
+JS_SRC = $(filter-out %.d.js, $(patsubst src/%, lib/%, $(TS_SRC:%.ts=%.js)))
 JS_SRC += lib/sqlite/sqlite3-emscripten.js
 
-lib/%.js: src/lib/%.ts
+lib/%.js: src/%.ts
 	yarn build:ts
 
 #### UMD
@@ -174,10 +174,10 @@ dist/blogsearch.wasm: lib/sqlite/blogsearch.wasm
 
 # These are represented as $(word {line_num}, $^) in the recipe
 WASM_DEPS = \
-	src/lib/sqlite/sqlite3-emscripten-post-js.js \
+	src/sqlite/sqlite3-emscripten-post-js.js \
 	sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c \
-	src/lib/sqlite/exported_functions.json \
-	src/lib/sqlite/exported_runtime_methods.json
+	src/sqlite/exported_functions.json \
+	src/sqlite/exported_runtime_methods.json
 
 lib/sqlite/sqlite3-emscripten.js: lib/sqlite/blogsearch.wasm
 lib/sqlite/blogsearch.wasm: $(WASM_DEPS)
@@ -204,17 +204,6 @@ sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c: cache/$(SQLITE_AMALGAMATION).zip
 cache/$(SQLITE_AMALGAMATION).zip:
 	mkdir -p cache
 	curl -LsSf '$(SQLITE_AMALGAMATION_ZIP_URL)' -o $@
-
-################################################################################
-# Building CSS
-################################################################################
-dist/blogsearch.css: src/styles/main.scss $(wildcard src/styles/*.scss)
-	node-sass --output-style expanded $< \
-  	| postcss --use autoprefixer -o $@
-
-dist/blogsearch.min.map: dist/blogsearch.min.css
-dist/blogsearch.min.css: dist/blogsearch.css
-	postcss $< --use cssnano --map $(@:.css=.min.css) -o $@
 
 ################################################################################
 # Etc.

@@ -5,12 +5,12 @@
     "module": "ESNext",
     "noImplicitReturns": false,
     "noUnusedLocals": false,
-    "rootDir": "src/lib",
+    "rootDir": "src",
     "outDir": "lib-test",
   },
   "include": [
-    "src/lib/**/*.ts",
-    "src/lib/**/index.js"
+    "src/**/*.ts",
+    "src/**/index.js"
   ],
   "exclude": []
 }

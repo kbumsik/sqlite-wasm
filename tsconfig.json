@@ -4,7 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["ESNext", "WebWorker", "DOM"],
-    "rootDir": "src/lib",
+    "rootDir": "src",
     "outDir": "lib",
     "allowJs": true,
     "downlevelIteration": true,
@@ -25,8 +25,8 @@
     "strictFunctionTypes": true
   },
   "include": [
-    "src/lib/**/*.ts",
-    "src/lib/**/index.js"
+    "src/**/*.ts",
+    "src/**/index.js"
   ],
   "exclude": [
     "lib",
