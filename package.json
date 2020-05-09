@@ -1,6 +1,6 @@
 {
   "name": "sqlite-wasm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Run SQLite on the web, using WebAssembly",
   "repository": "https://github.com/kbumsik/sqlite-wasm",
   "author": "Bumsik Kim <k.bumsik@gmail.com>",
