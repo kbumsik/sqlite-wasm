@@ -9,7 +9,7 @@ import {
   ReturnCode,
   Pointer
 } from './sqlite3-types';
-import Database from './Database';
+import type Database from './Database';
 
 /* Represents a prepared statement.
 
