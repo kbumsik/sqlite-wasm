@@ -8,13 +8,13 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
-    "build": "make dist",
-    "build:dev": "make debug",
+    "build": "make build-dist",
+    "build:dev": "make build-debug",
     "build:ts": "tsc",
     "build:ts-test": "tsc --build tsconfig.test.json",
     "watch": "tsc -w",
     "clean": "make clean",
-    "deploy": "make dist",
+    "deploy": "make build-dist",
     "lint": "eslint --ext .js,.ts,.tsx ./src",
     "test": "yarn build:ts-test && jest --no-cache",
     "test:watch": "jest --no-cache --watch --no-watchman"
