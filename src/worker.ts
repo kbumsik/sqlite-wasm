@@ -2,8 +2,8 @@
 //   Importing actual motule will hoist outside of initWorker() function,
 //   making it difficult to wrap around it for UMD Web Worker function.
 import type { SQLite3Wasm } from './sqlite3-emscripten';
-import type { Database } from './sqlite3';
 import type { ReturnMap } from './sqlite3-types';
+import type Database from './Database';
 import type { WorkerMessage } from './workerInterface';
 
 declare global {
@@ -17,7 +17,7 @@ declare global {
 
 export default async function initWorker () {
   const sqlite3Wasm = (await import('./sqlite3-emscripten')).default;
-  const sqlit3API = await import('./sqlite3');
+  const DatabaseWasm = (await import('./Database')).default;
   const loadWasm = wasmLoader(sqlite3Wasm);
   /** @type {Database} I import Database dynamically as value so I cannot use typeof Database. */
   let db: Database;
@@ -36,7 +36,7 @@ export default async function initWorker () {
         if (db) {
           db.close();
         }
-        db = new sqlit3API.Database(wasm, new Uint8Array(data.dbBinary));
+        db = new DatabaseWasm(wasm, new Uint8Array(data.dbBinary));
         postMessage({ respondTo: 'open', success: true });
         break;
       }

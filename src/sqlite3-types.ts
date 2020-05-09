@@ -1,3 +1,6 @@
+// Emscripten's (or WebAssembly in general) pointer type is essentially uint32.
+export type Pointer = number;
+
 type TypedArray =
   | Int8Array
   | Uint8Array
